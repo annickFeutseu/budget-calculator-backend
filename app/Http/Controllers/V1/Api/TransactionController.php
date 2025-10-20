@@ -31,15 +31,17 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(15);
 
-        return response()->json([
-            'success' => true,
-            'data' => TransactionResource::collection($transactions),
-            'meta' => [
+        return returnResponse(
+            TransactionResource::collection($transactions),
+            true,
+            200,
+            "",
+            [
                 'current_page' => $transactions->currentPage(),
                 'total' => $transactions->total(),
                 'per_page' => $transactions->perPage(),
             ],
-        ]);
+        );
     }
 
     public function store(StoreTransactionRequest $request): JsonResponse
@@ -53,60 +55,42 @@ class TransactionController extends Controller
             'transaction_date' => $request->transaction_date,
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction créée avec succès',
-            'data' => new TransactionResource($transaction->load('category')),
-        ], 201);
+        return returnResponse(
+            new TransactionResource($transaction->load('category')),
+            true,
+            201,
+            "Transaction créée avec succès"
+        );
     }
 
     public function show(Request $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Non autorisé',
-            ], 403);
+            return returnResponse([], false, 403, "Non autorisé");
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => new TransactionResource($transaction->load('category')),
-        ]);
+        return returnResponse(new TransactionResource($transaction->load('category')));
     }
 
     public function update(StoreTransactionRequest $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Non autorisé',
-            ], 403);
+            return returnResponse([], false, 403, "Non autorisé");
         }
 
         $transaction->update($request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction mise à jour',
-            'data' => new TransactionResource($transaction->load('category')),
-        ]);
+        return returnResponse(new TransactionResource($transaction->load('category')), true, 200, "Transaction mise à jour");
     }
 
     public function destroy(Request $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Non autorisé',
-            ], 403);
+            return returnResponse([], false, 403, "Non autorisé");
         }
 
         $transaction->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Transaction supprimée',
-        ]);
+        return returnResponse([], true, 200, "Transaction supprimée");
     }
 }

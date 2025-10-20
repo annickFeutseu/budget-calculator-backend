@@ -16,10 +16,7 @@ class CategoryController extends Controller
             ->orderBy('name')
             ->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $categories,
-        ]);
+        return returnResponse($categories);
     }
 
     public function store(Request $request): JsonResponse
@@ -39,20 +36,14 @@ class CategoryController extends Controller
             'icon' => $validated['icon'] ?? '💰',
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Catégorie créée avec succès',
-            'data' => $category,
-        ], 201);
+
+        return returnResponse($category, true, 201, "Catégorie créée avec succès");
     }
 
     public function update(Request $request, Category $category): JsonResponse
     {
         if ($category->user_id !== $request->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Non autorisé',
-            ], 403);
+            return returnResponse([], false, 403, "Non autorisé");
         }
 
         $validated = $request->validate([
@@ -63,36 +54,22 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Catégorie mise à jour',
-            'data' => $category,
-        ]);
+        return returnResponse($category, true, 200, "Catégorie mise à jour");
     }
 
     public function destroy(Request $request, Category $category): JsonResponse
     {
         if ($category->user_id !== $request->user()->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Non autorisé',
-            ], 403);
+            return returnResponse([], false, 403, "Non autorisé");
         }
 
         // Vérifier si des transactions utilisent cette catégorie
         if ($category->transactions()->count() > 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Impossible de supprimer une catégorie avec des transactions',
-            ], 422);
+            return returnResponse([], false, 402, "Impossible de supprimer une catégorie avec des transactions");
         }
 
         $category->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Catégorie supprimée',
-        ]);
+        return returnResponse([], true, 200, "Catégorie supprimée");
     }
 }
-

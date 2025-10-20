@@ -54,9 +54,9 @@ class DashboardController extends Controller
                 ];
             });
 
-        return response()->json([
-            'success' => true,
-            'data' => [
+
+        return returnResponse(
+            [
                 'total_income' => $income,
                 'total_expenses' => $expenses,
                 'balance' => $income - $expenses,
@@ -65,16 +65,16 @@ class DashboardController extends Controller
                 'period' => [
                     'start' => $startOfMonth->toDateString(),
                     'end' => $endOfMonth->toDateString(),
-                ],
-            ],
-        ]);
+                ]
+            ]
+        );
     }
 
     public function chartData(Request $request): JsonResponse
     {
         $userId = $request->user()->id;
         $period = $request->input('period', 'month'); // month, year
-        
+
         if ($period === 'year') {
             $startDate = Carbon::now()->startOfYear();
             $endDate = Carbon::now()->endOfYear();
@@ -108,9 +108,8 @@ class DashboardController extends Controller
             $expenseData[] = $transactions->where('type', 'expense')->sum('total');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => [
+        return returnResponse(
+            [
                 'labels' => $labels,
                 'datasets' => [
                     [
@@ -127,8 +126,8 @@ class DashboardController extends Controller
                         'borderColor' => 'rgb(239, 68, 68)',
                         'borderWidth' => 2,
                     ],
-                ],
-            ],
-        ]);
+                ]
+            ]
+        );
     }
 }
