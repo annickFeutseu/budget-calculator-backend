@@ -23,16 +23,28 @@ class Category extends Model
         'user_id' => 'integer',
     ];
 
+    /**
+     * Relations
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relations
+     * @return HasMany
+     */
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
 
+    /**
+     * Relations
+     * @return HasMany
+     */
     public function budgets(): HasMany
     {
         return $this->hasMany(Budget::class);

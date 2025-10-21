@@ -48,17 +48,26 @@ class User extends Authenticatable
 
     /**
      * Relations
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }
 
+    /**
+     * Relations
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function categories()
     {
         return $this->hasMany(Category::class);
     }
 
+    /**
+     * Relations
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function budgets()
     {
         return $this->hasMany(Budget::class);

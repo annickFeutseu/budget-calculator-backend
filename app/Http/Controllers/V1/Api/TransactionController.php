@@ -11,6 +11,11 @@ use Illuminate\Http\JsonResponse;
 
 class TransactionController extends Controller
 {
+    /**
+     * Afficher la liste des transactions
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         $query = Transaction::with('category')
@@ -44,6 +49,11 @@ class TransactionController extends Controller
         );
     }
 
+    /**
+     * Créer une nouvelle transaction
+     * @param StoreTransactionRequest $request
+     * @return JsonResponse
+     */
     public function store(StoreTransactionRequest $request): JsonResponse
     {
         $transaction = Transaction::create([
@@ -63,6 +73,12 @@ class TransactionController extends Controller
         );
     }
 
+    /**
+     * Afficher une transaction spécifique
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return JsonResponse
+     */
     public function show(Request $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {
@@ -72,6 +88,12 @@ class TransactionController extends Controller
         return returnResponse(new TransactionResource($transaction->load('category')));
     }
 
+    /**
+     * Mettre à jour une transaction
+     * @param StoreTransactionRequest $request
+     * @param Transaction $transaction
+     * @return JsonResponse
+     */
     public function update(StoreTransactionRequest $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {
@@ -83,6 +105,12 @@ class TransactionController extends Controller
         return returnResponse(new TransactionResource($transaction->load('category')), true, 200, "Transaction mise à jour");
     }
 
+    /**
+     * Supprimer une transaction
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return JsonResponse
+     */
     public function destroy(Request $request, Transaction $transaction): JsonResponse
     {
         if ($transaction->user_id !== $request->user()->id) {

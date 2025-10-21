@@ -10,6 +10,11 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
+    /**
+     * Afficher la liste des catégories
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function index(Request $request): JsonResponse
     {
         $categories = Category::where('user_id', $request->user()->id)
@@ -19,6 +24,11 @@ class CategoryController extends Controller
         return returnResponse($categories);
     }
 
+    /**
+     * Créer une nouvelle catégorie
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -40,6 +50,12 @@ class CategoryController extends Controller
         return returnResponse($category, true, 201, "Catégorie créée avec succès");
     }
 
+    /**
+     * Mettre à jour une catégorie
+     * @param Request $request
+     * @param Category $category
+     * @return JsonResponse
+     */
     public function update(Request $request, Category $category): JsonResponse
     {
         if ($category->user_id !== $request->user()->id) {
@@ -57,6 +73,12 @@ class CategoryController extends Controller
         return returnResponse($category, true, 200, "Catégorie mise à jour");
     }
 
+    /**
+     * Supprimer une catégorie
+     * @param Request $request
+     * @param Category $category
+     * @return JsonResponse
+     */
     public function destroy(Request $request, Category $category): JsonResponse
     {
         if ($category->user_id !== $request->user()->id) {

@@ -13,6 +13,11 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
+    /**
+     * Résumé du tableau de bord
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function summary(Request $request): JsonResponse
     {
         $userId = $request->user()->id;
@@ -70,6 +75,11 @@ class DashboardController extends Controller
         );
     }
 
+    /**
+     * Données pour les graphiques du tableau de bord
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function chartData(Request $request): JsonResponse
     {
         $userId = $request->user()->id;

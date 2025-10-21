@@ -14,6 +14,8 @@ class AuthController extends Controller
 {
     /**
      * Inscription d'un nouvel utilisateur
+     * @param Request $request
+     * @return JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
@@ -57,6 +59,8 @@ class AuthController extends Controller
 
     /**
      * Connexion d'un utilisateur
+     * @param Request $request
+     * @return JsonResponse
      */
     public function login(Request $request): JsonResponse
     {
@@ -105,6 +109,8 @@ class AuthController extends Controller
 
     /**
      * Déconnexion d'un utilisateur
+     * @param Request $request
+     * @return JsonResponse
      */
     public function logout(Request $request): JsonResponse
     {
@@ -118,6 +124,8 @@ class AuthController extends Controller
 
     /**
      * Récupérer l'utilisateur connecté
+     * @param Request $request
+     * @return JsonResponse
      */
     public function user(Request $request): JsonResponse
     {

@@ -26,31 +26,55 @@ class Transaction extends Model
         'category_id' => 'integer',
     ];
 
+    /**
+     * Relations
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relations
+     * @return BelongsTo
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * Scopes
+     * @return mixed
+     */
     public function scopeIncome($query)
     {
         return $query->where('type', 'income');
     }
 
+    /**
+     * Scopes
+     * @return mixed
+     */
     public function scopeExpense($query)
     {
         return $query->where('type', 'expense');
     }
 
+    /**
+     * Scopes
+     * @return mixed
+     */
     public function scopeForUser($query, int $userId)
     {
         return $query->where('user_id', $userId);
     }
 
+    /**
+     * Scopes
+     * @return mixed
+     */
     public function scopeDateRange($query, $startDate, $endDate)
     {
         return $query->whereBetween('transaction_date', [$startDate, $endDate]);
